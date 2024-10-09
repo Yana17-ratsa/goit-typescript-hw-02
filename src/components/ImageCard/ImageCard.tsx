@@ -1,4 +1,13 @@
-const ImageCard = ({ galleryItemData, onOpenModal }) => {
+import { FC } from "react"
+import { Image } from "../App/App"
+
+interface ImageCardProps {
+    galleryItemData: Image,
+    onOpenModal: (imgUrl: string, alt: string) => void, 
+}
+
+
+const ImageCard : FC<ImageCardProps>= ({ galleryItemData, onOpenModal }) => {
     return (
         <div>
              <img  onClick={() =>

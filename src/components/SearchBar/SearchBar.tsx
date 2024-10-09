@@ -1,6 +1,12 @@
 import { Formik, Form, Field } from "formik";
 import toast from 'react-hot-toast';
-const SearchBar = ({ onSearch }) => {
+import { FC } from "react";
+
+interface SearchBarProps {
+  onSearch:  (topic: string) => void
+}
+
+const SearchBar : FC<SearchBarProps> = ({ onSearch }) => {
     return (
       <Formik
       initialValues={{ query: "" }}

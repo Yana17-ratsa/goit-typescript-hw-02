@@ -8,20 +8,30 @@ import ImageModal from "../ImageModal/ImageModal";
 import Loader from "../Loader/Loader";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+
+export interface Image {
+  description: string,
+  id: string,
+  urls: {
+    regular : string,
+    small: string
+  }
+}
+
 function App () {
 
-    const [images, setImages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [page, setPage] = useState(1);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [totalPages, setTotalPages] = useState(0);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [modalImageSrc, setModalImageSrc] = useState("");
-    const [modalImageAlt, setModalImageAlt] = useState("");
+    const [images, setImages] = useState<Image[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [modalImageSrc, setModalImageSrc] = useState<string>("");
+    const [modalImageAlt, setModalImageAlt] = useState<string>("");
   
 
-    useEffect(() => {
+    useEffect(() : void => {
         if (!searchQuery) return;
 
         async function fetchImageGallery () {
@@ -29,11 +39,15 @@ function App () {
                 setIsLoading(true);
                 setIsError(false);
     
-                const { results,  total_pages} = await getImageGallery(searchQuery, page);
+                const { results,  total_pages } = await getImageGallery(searchQuery, page);
 
                 setTotalPages(total_pages);
                 setImages((prevState) => [...prevState, ...results]);
-                console.log(total_pages);
+                // console.log(total_pages);
+                // console.log(results);
+                // console.log(images);
+                
+                
             }
             catch (error) {
                 setIsError(true);
@@ -48,24 +62,24 @@ function App () {
 
 
 
-const handleSearch = async (topic) => {
+const handleSearch  = async (topic : string) : Promise<void> => {
     setSearchQuery(topic);
     setPage(1);
     setImages([]);
 }
 
 
-const handleLoadMore = async () => {
+const handleLoadMore = async () : Promise<void>=> {
     setPage(page + 1);
 }
 
-const openModal = (imgUrl, alt) => {
+const openModal = (imgUrl: string, alt: string)  : void => {
     setModalIsOpen(true);
     setModalImageSrc(imgUrl);
     setModalImageAlt(alt);
   };
 
-  const closeModal = () => {
+  const closeModal = () : void => {
     setModalIsOpen(false);
     setModalImageSrc("");
     setModalImageAlt("");
@@ -89,7 +103,8 @@ const openModal = (imgUrl, alt) => {
     return (
     <>
         <SearchBar onSearch={handleSearch}/>
-        {isLoading && <Loader/>}
+        {isLoading && <><p>"Loading... please wait"</p></>
+        }
         {isError && <ErrorMessage/>}
         <ImageGallery gallery={images} onOpenModal={openModal}/>
         {page < totalPages && images.length > 0 && !isLoading && (
