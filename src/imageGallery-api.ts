@@ -2,14 +2,17 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'https://api.unsplash.com/';
 
-// interface ParamsInt {
-//   query: string,
-//   page: number,
-//   per_page: number,
-//   client_id: string,
-// }
+interface ParamsInt {
+  data: {
+    query: string;
+    page: number;
+    per_page: number;
+    client_id: string;
+  };
+}
+
 export const getImageGallery = async (topic: string, currentPage: number) => {
-  const response = await axios.get('/search/photos', {
+  const response: ParamsInt = await axios.get('/search/photos', {
     params: {
       query: topic,
       page: currentPage,
